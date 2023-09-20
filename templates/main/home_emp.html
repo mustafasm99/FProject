@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block body %}
+{%load static%}
+<div class="main-container ">
+    <div class="flex  flex-50">
+        <div class="profile-image">
+            {% if emp.image%}
+            <img src="{{emp.image.url}}" alt="" class="image">
+            {% else %}
+            <img src="{% static 'img/acc.jpg' %}" alt="" class="image">
+            {% endif %}
+        </div>
+        <div class="flex-col center" style="width: fit-content;margin: 0;">
+            <div class="flex center " style="margin: 0 10px;" >
+                <h3 class="mx-1 text" style="height: fit-content;">
+                    Employ Name : <span>{{emp}}</span>
+                    <h3>
+                        <a href="{% url 'LOGOUT' %}">LOG OUT</a>
+                    </h3>
+                </h3>
+            </div>
+            <div class="flex my-1">
+                <h3 class=" text">
+                    Team leader : <span>{{emp.teamleader}}</span>
+                </h3>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="flex flex-50 center">
+        <div class="center">
+            <div class="label flex center btn-padding">
+                <h4 class="filter">
+                    <a href="{% url 'nework' %}">New work +</a>
+                </h4>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div class="flex center sp-around my-2">
+    <div class="filter btn-padding mx-1 label">
+        <h3 id="all-work" >All work</h3>
+    </div>
+    <div class="filter btn-padding mx-1 btn-white">
+        <h3 id="rejectedwork"> Rejected work </h3>
+    </div>
+    <div class="filter btn-padding mx-1 btn-white">
+        <h3 class="aprovework"> Approved work </h3>
+    </div>
+</div>
+
+<div class="flex center my-1 mx-1">
+    {% for i in emp.get_all_works %}
+    <div class="card flex-col center">
+        <div class="mid-image">
+            {% if i.teacher.image%}
+            <img src="{{i.teacher.image.url}}" alt="" class="image">
+            {% else %}
+            <img src="{% static 'img/acc.jpg'%}" alt="">
+            {% endif %}
+        </div>
+        <div class="container info-holder">
+            <p class="text"> Teacher Name : <span>{{i.teacher}}</span> </p>
+            <p class="text"> Time recored start : <span>{{i.start_time}}</span> </p>
+            <p class="text"> Time recored end : <span>{{i.end_time}}</span> </p>
+            <p class="text"> Date : <span>{{i.date}}</span></p>
+            {% if i.is_prove == False%}
+            <input type="hidden" name="rejected" class="rejected">
+                <p class="text" >State : <span style="color:rgb(255, 67, 67)" > Rejected </span> </p>
+            {% else %}
+            <input type="hidden" name="rejected" class="aproved">
+            <p class="text">State : <span style="color:rgb(151, 215, 54)"> Approved </span> </p>
+            {%endif%}
+        </div>
+        
+    </div>
+    {% endfor %}
+</div>
+{% endblock body %}

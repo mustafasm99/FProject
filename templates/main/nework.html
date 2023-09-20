@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body %}
+
+<div class="main-container flex-col">
+    <div class="flex center mx-1 my-2">
+        <div class="profile-image">
+            {% if emp.image%}
+            <img src="{{emp.image.url}}" alt="" class="image">
+            {% else %}
+            <img src="{% static 'img/acc.jpg' %}" alt="" class="image">
+            {% endif %}
+        </div>
+        <div class="flex-col center" style="width: fit-content;margin: 0;">
+            <div class="flex center " style="margin: 0 10px;" >
+                <h3 class="mx-1 text" style="height: fit-content;">
+                    Employ Name : <span>{{emp}}</span>
+                    <h3>
+                        <a href="{% url 'LOGOUT' %}">LOG OUT</a>
+                    </h3>
+                </h3>
+            </div>
+            <div class="flex my-1">
+                <h3 class=" text">
+                    Team leader : <span>{{emp.teamleader}}</span>
+                </h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex center">
+        <div class="teacher-holder">
+            <div class="flex center">
+                <div class="profile-image">
+                    <img src="{% static 'img/acc.jpg' %}" alt="" class="image">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock body %}
