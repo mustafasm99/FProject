@@ -4,6 +4,7 @@ from django.contrib.auth import login , logout , authenticate
 from .models import*
 from django.contrib.auth.models import User
 from django.http import JsonResponse
+import datetime
 # Create your views here.
 
 
@@ -87,7 +88,39 @@ def New_work(e):
     emp = Emploeey.objects.filter(user = e.user).first()
     if emp:
         return render(e , "main/nework.html" , {
-            'emp':emp
+            'emp':emp,
+            'teachers':teacher.objects.all(),
+            'sub':materials.objects.all()
         })
     else:
         return redirect('/')
+
+# these function for get the teacher info API 
+def get_teacher(e,id):
+    return JsonResponse({
+        "teacher":teacher.objects.filter( id = id ).values("name" , "image").first()
+    })
+
+def Requred(e):
+    if e.GET.get('state'):
+        if e.GET.get('state') == 'running':
+            e.session['start_time'] = str(datetime.datetime.now())
+            return JsonResponse({
+                'state':'start record'
+            })
+        elif e.GET.get('state') == "stop":
+            if 'start_time' in e.session:
+                end_time = datetime.datetime.now()
+                works.objects.create(
+                    start_time = e.session['start_time'],
+                    end_time = end_time,
+                    emploeey = Emploeey.objects.get(user = e.user),
+                    type = works_type.objects.filter(id = 1).first(),
+                    reacher = e.GET.get('teacher')
+                )
+                return JsonResponse({
+                    'state':'done'
+                })
+    return JsonResponse({
+        "state":"no state sended"
+    })

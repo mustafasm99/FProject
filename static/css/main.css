@@ -31,6 +31,11 @@ body ,html{
     flex-wrap: wrap;
     flex-direction: column;
 }
+.flex-row{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
 .center{
     justify-self: center;
     align-items: center;
@@ -316,6 +321,73 @@ body ,html{
 }
 .teacher-holder{
     width: 100%;
-    height: 750px;
-    max-width: 750px;
+    height: 550px;
+    max-width: 100%;
+    background-color: white;
+    border-radius: var(--rounder);
 }
+.big-image{
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+}
+.mx-gap{
+    margin:var(--gap) 0;
+}
+.my-gap{
+    margin:0  var(--gap);
+}
+.mx-5{
+    margin: 0 50px;
+}
+.big-text{
+    font-size: 30px;
+    font-family: 900;
+    color: var(--btn);
+}
+.big-text span{
+    color: black;
+    font-weight: 600;
+}
+.red-btn{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    text-align: center;
+    background-color: red;
+    color: white;
+    margin: 10px;
+    cursor: pointer;
+}
+.timer-input label{
+    height: 100%;
+    font-size: 30px;
+    border: none;
+    outline: none;
+}
+.p-1{
+    padding: 10px;
+}
+.search-input{
+    width: 100%;
+}
+#search{
+    margin: 20px auto;
+    border: none;
+    outline: none;
+    border-radius: var(--rounder);
+    height: 45px;
+    text-align: center;
+}
+select{
+    width: 100%;
+    background-color: var(--btn);
+    color: white;
+    font-size: 25px;
+    font-weight: 900;
+    outline: none;
+    border: none;
+}
+/* option{
+    font-size: 25px;
+} */
