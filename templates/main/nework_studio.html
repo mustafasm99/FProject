@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
 {% block body %}
-
+<input type="hidden" name="" id="studio_page">
 <div class="main-container flex-col">
     <div class="flex center mx-1 my-2">
         <div class="profile-image">
-            {% if emp.image%}
-            <img src="{{emp.image.url}}" alt="" class="image">
+            {% if data.image%}
+            <img src="{{data.image.url}}" alt="" class="image">
             {% else %}
             <img src="{% static 'img/acc.jpg' %}" alt="" class="image">
             {% endif %}
@@ -14,19 +14,59 @@
         <div class="flex-col center" style="width: fit-content;margin: 0;">
             <div class="flex center " style="margin: 0 10px;" >
                 <h3 class="mx-1 text" style="height: fit-content;">
-                    Employ Name : <span>{{emp}}</span>
+                    Studio Manger Name : <span>{{data}}</span>
                     <h3>
                         <a href="{% url 'LOGOUT' %}">LOG OUT</a>
-                        <a href="{% url 'home' %}"><i class="fa-solid fa-house"></i></a>
+                        <a href="{% url 'home' %}" class="mx-1"><i class="fa-solid fa-house"></i></a>
                     </h3>
                 </h3>
             </div>
-            <div class="flex my-1">
-                <h3 class=" text">
-                    Team leader : <span>{{emp.teamleader}}</span>
-                </h3>
+        </div>
+    </div>
+
+    <div class="flex container end" style="margin: 0;">
+        <div class="flex-s">
+            <div class="flex mx-5 center">
+                <div class="label flex-50">
+                    <select name="subject" id="studio_id">
+                        <option value="">Select studio</option>
+                        {% for i in studios %}
+                            <option value="{{i.id}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex mx-5 center">
+                <div class="label flex-50">
+                    <select name="subject" id="causes_id">
+                        <option value="">Select Causes</option>
+                        {% for i in causes %}
+                            <option value="{{i.id}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
         </div>
+
+        <div class="flex-s">
+            <div class="flex mx-5 center">
+                <div class="label flex-50">
+                    <select name="subject" id="subject">
+                        <option value="">Select subject</option>
+                        {% for i in sub %}
+                            <option value="{{i}}">{{i}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex center mx-5" style="position: relative;">
+                <i class="fa-solid fa-magnifying-glass" style="left:15px;z-index: 9;position: absolute;"></i> <span style="left:35px;z-index: 9;position: absolute;">search</span>
+                <input type="text" id="search" class="mx-5 search-input my-2  flex-50"> 
+            </div>
+        </div>
+
     </div>
 
     <div class="flex">
@@ -57,21 +97,8 @@
             </div>
         </div>
         
+
         <div style="height: fit-content;">
-            <div class="flex mx-5 center">
-                <div class="label flex-50">
-                    <select name="subject" id="subject">
-                        <option value="">Select subject</option>
-                        {% for i in sub %}
-                            <option value="{{i}}">{{i}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-            <div class="flex center mx-5 my-2" style="position: relative;">
-                <i class="fa-solid fa-magnifying-glass" style="left:15px;z-index: 9;position: absolute;"></i> <span style="left:35px;z-index: 9;position: absolute;">search</span>
-                <input type="text" id="search" class="mx-5 search-input my-2  flex-50"> 
-            </div>
             <div class="aside mx-5" style="height: 500px;">
                 <div class="label center flex">
                     <h3>
@@ -105,7 +132,6 @@
         </div>
     
     </div>
+
 </div>
-
-
 {% endblock body %}

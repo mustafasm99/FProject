@@ -3,14 +3,16 @@ from django.contrib import messages
 from django.contrib.auth import login , logout , authenticate
 from .models import*
 from django.contrib.auth.models import User
-from django.http import JsonResponse
+from django.http import JsonResponse , HttpResponse
 import datetime
+import pandas as pd
 # Create your views here.
 
 
 def home_teamleader(e):
     # the post Request  <------------->
     if e.method == "POST":
+        print(e.POST)
         if teamleader.objects.filter(user = e.user):
             # the action to delete the user 
             if e.POST.get('delete'):
@@ -22,8 +24,8 @@ def home_teamleader(e):
                 prove.is_prove = True 
                 prove.save()
             # the action to make the request rejected 
-            if e.POST.get('toreject'):
-                reject = works.objects.get(id = e.POST['toreject'])
+            if e.POST.get('toareject'):
+                reject = works.objects.get(id = e.POST['toareject'])
                 reject.is_prove = False
                 reject.save()
         else:
@@ -98,29 +100,138 @@ def New_work(e):
 # these function for get the teacher info API 
 def get_teacher(e,id):
     return JsonResponse({
-        "teacher":teacher.objects.filter( id = id ).values("name" , "image").first()
+        "teacher":teacher.objects.filter( id = id ).values("name" , "image" , "id").first()
     })
 
+
+# Requred API for start end and creates the works 
 def Requred(e):
     if e.GET.get('state'):
         if e.GET.get('state') == 'running':
-            e.session['start_time'] = str(datetime.datetime.now())
+            if 'start_time' in e.session:
+                e.session['start_time'] = ''
+                e.session.modified = True
+            e.session['start_time'] = datetime.datetime.now().time().strftime("%H:%M:%S")
             return JsonResponse({
-                'state':'start record'
+                'state':'start record',
+                'start_at':e.session['start_time']
             })
         elif e.GET.get('state') == "stop":
+            print(e.GET)
             if 'start_time' in e.session:
-                end_time = datetime.datetime.now()
-                works.objects.create(
-                    start_time = e.session['start_time'],
-                    end_time = end_time,
-                    emploeey = Emploeey.objects.get(user = e.user),
-                    type = works_type.objects.filter(id = 1).first(),
-                    reacher = e.GET.get('teacher')
-                )
-                return JsonResponse({
-                    'state':'done'
-                })
+                end_time = datetime.datetime.now().time().strftime("%H:%M:%S")
+                # print(end_time , e.session['start_time'])
+                try:
+                    works.objects.create(
+                        start_time = e.session['start_time'],
+                        end_time = end_time,
+                        emploeey = Emploeey.objects.get(user = e.user) if Emploeey.objects.filter(user = e.user).first() else None,
+                        type = works_type.objects.filter(id = 1).first(),
+                        teacher = teacher.objects.filter(id = e.GET.get('teacher')).first(),
+                        is_prove = None,
+                        studio = studio.objects.get(id = int(e.GET.get('studio'))) if e.GET.get('studio') and e.GET.get('studio') is not None  else None ,
+                        cause = causes.objects.get(id = int(e.GET.get('case'))) if e.GET.get('case') and e.GET.get('case') is not None  else None ,
+                        studio_manger = studio_manger.objects.get(user = e.user) if studio_manger.objects.filter(user = e.user).first() else None
+                    )
+                    totalTime = datetime.datetime.strptime(end_time ,"%H:%M:%S")- datetime.datetime.strptime(e.session['start_time'] , "%H:%M:%S")
+                    hours,teminder = divmod(totalTime.seconds , 3600)
+                    minutes , secondes = divmod(teminder , 60)
+                    if Emploeey.objects.filter(user = e.user):
+                        return JsonResponse({
+                            'state':'done',
+                            'end_time':end_time,
+                            'start_time':e.session['start_time'],
+                            'Total_requred': f"{hours}:{minutes}:{secondes}"
+                        })
+                    else:
+                        return JsonResponse({
+                            'state':'done',
+                            'end_time':end_time,
+                            'start_time':e.session['start_time'],
+                            'Total_requred': f"{hours}:{minutes}:{secondes}",
+                            'studio': studio.objects.get(id = int(e.GET.get('studio'))).name if e.GET.get('studio') and e.GET.get('studio') is not None  else None ,
+                            'cause': causes.objects.get(id = int(e.GET.get('case'))).name if e.GET.get('case') and e.GET.get('case') is not None  else None ,
+                        })
+                except:
+                    print(e.GET)
+                    return JsonResponse({
+                        'state':'you didnt select any teacher'
+                    })
     return JsonResponse({
         "state":"no state sended"
     })
+
+
+def home_studio(e):
+    stu_mang = studio_manger.objects.filter(user = e.user).first()
+    if stu_mang:
+        return render(e , "main/home_studio.html" ,{'data':stu_mang})
+    else:
+        return redirect('/')
+def nowork_studio(e):
+    return render(e , 'main/nework_studio.html' , {
+        'data':studio_manger.objects.filter(user = e.user).first(),
+        'studios':studio.objects.all(),
+        'causes':causes.objects.all(),
+        'teachers':teacher.objects.all(),
+        'sub':materials.objects.all()
+    })
+
+
+#//////////////////////////////////////////////////////
+#///////////// admin page veiws ///////////////////////
+#/////////////////////////////////////////////////////
+def tools(e):
+    if e.method == "POST":
+        if e.POST.get('studio'):
+            st = studio.objects.all()
+            data_set = []
+            for studio_instance in st:
+                for work_instance in studio_instance.get_all_works():
+                    data_set.append({
+                        'id': work_instance.id,
+                        'start_time': work_instance.start_time,
+                        'end_time': work_instance.end_time,
+                        'total_time': work_instance.work_total_time(),
+                        'teacher': work_instance.get_teacher(),
+                        'is_prove': work_instance.is_prove,
+                        'studio': work_instance.get_studio(),
+                        'type': work_instance.get_type(),
+                        'cause': work_instance.get_cause(),
+                        'manager': work_instance.get_manager(),
+                    })
+                data_set.append({'End section for ' : studio_instance.name})
+            data = pd.DataFrame(data_set)
+            res = HttpResponse(content_type = "application/ms-excel")
+            res['Content-Disposition'] = f'attachemnt; filename = {datetime.datetime.now().strftime("%Y_%M_%D|%H_%M_%S")}.xlsx'
+            data.to_excel(res, index=False)
+            return res
+        
+        
+        elif e.POST.get('emp'):
+            emps = Emploeey.objects.all()
+            data = []
+            for i in emps:
+                for j in i.get_all_works():
+                    data.append({
+                        'work_id': j.id,
+                        'Emploeey': j.emploeey.user.username,
+                        'start_time': j.start_time,
+                        'end_time': j.end_time,
+                        # 'total_time': j.work_total_time(),
+                        'teacher': j.get_teacher(),
+                        'is_prove': j.is_prove,
+                        'date': j.date
+                    })
+                data.append({"End section for" : f"{i.user.username}"})
+                
+            data_frame = pd.DataFrame(data)
+            res = HttpResponse(content_type = "application/ms-excel")
+            res['Content-Disposition'] = f'attachemnt; filename = {datetime.datetime.now().strftime("%Y_%M_%D|%H_%M_%S")}.xlsx'
+            data_frame.to_excel(res, index=False)
+            return res
+            # return JsonResponse(data , safe=False)
+        else:
+            HttpResponse("BAND REQUEST")
+    else:
+        return HttpResponse("ERORR")

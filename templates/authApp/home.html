@@ -1,11 +1,28 @@
-{% extends "base.html" %}
-{% block body %}
-
-<form action="" method="POST">
-    {% csrf_token %}
-    <input type="text" name="username">
-    <input type="text" name="password">
-    <button type="submit">login</button>
-</form>
-
-{% endblock body %}
+<!DOCTYPE html>
+<html lang="en">
+    {%load static%}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOG IN</title>
+    <link rel="stylesheet" href="{% static 'css/form.css' %}">
+</head>
+<body>
+    <div class="flex full-width center">
+        <div class="form-holder">
+            <form action="" method="POST" class="login-form rounded">
+                {% csrf_token %}
+                <div class="flex center">
+                    <label for="username"> User name</label>
+                    <input type="text" id="username" name="username">
+                </div>
+                <div class="flex center">
+                    <label for="password">Password</label>
+                    <input type="text" name="password" id="password">
+                </div>
+                <button type="submit">login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

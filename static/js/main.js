@@ -6,7 +6,6 @@ if(document.querySelector('#username')){
             type:'GET',
             url:'check_username/'+usernameinput.value ,
             success:(res)=>{
-                console.log(res);
                 if(res.user != false || usernameinput.value.indexOf(" ") !== -1){
                     if(usernameinput.classList.contains('success')){
                         usernameinput.classList.remove('success')
@@ -24,6 +23,9 @@ if(document.querySelector('#username')){
     })
     
 }
+
+teacher_selected = false
+
 if(document.getElementById('all-request')){
     cards = document.querySelectorAll('.card')
     // all requests 
@@ -65,6 +67,20 @@ if(document.querySelector('.red-btn')){
 
     
     $('.red-btn').click(function(){
+        if(!teacher_selected){
+            alert("يجب اختيار استاذ")
+            return
+        }
+        if (document.getElementById('studio_page')) {
+            if (!document.getElementById('studio_id').value) {
+                alert("يجب اختيار ستوديو أولاً");
+                return;
+            }
+            if (!document.getElementById('causes_id').value) {
+                alert("يجب اختيار سبب التسجيل أولاً");
+                return;
+            }
+        }
         if(!running){
             startTimer();
             $('.red-btn').html("<h1> STOP </h1>")
@@ -72,20 +88,61 @@ if(document.querySelector('.red-btn')){
             $.ajax({
                 type:"GET",
                 url:"/requred",
-                data:{'state':'running'}
+                data:{
+                'state':'running' ,
+                'teacher':document.getElementById('teacher_id').value,
+                },
+                success : (res)=>{
+                    note = document.getElementById('note')
+                    note.style = "opacity:1;"
+                    note.style.display = "flex"
+                    note.querySelector('div').innerHTML = `
+                    <p> state : ${res.state} </p> <br> 
+                    <p> start time : ${res.start_at} </p>
+                    `
+                }
             })
         }else{
             $('.red-btn').html("<h1> REC. </h1>")
             running = false
+            restart()
+            $.ajax({
+                type:"GET",
+                url:"/requred",
+                data:{
+                'state':'stop' ,
+                'teacher':document.getElementById('teacher_id').value,
+                'studio':document.getElementById('studio_id') ? document.getElementById('studio_id').value : '',
+                'case':document.getElementById('causes_id') ? document.getElementById('causes_id').value : '',
+                },
+                success : (res)=>{
+                    console.log(res);
+                    note = document.getElementById('note')
+                    note.style.display = "flex"
+                    html = `
+                    <p> state : ${res.state} </p> <br> 
+                    <p> start time : ${res.start_time} </p> <br>
+                    <p> end time : ${res.end_time} </p> <br>
+                    <p> Total Time : ${res.Total_requred} </p>
+                    `
+                    if (res.cause){
+                        html += `<p> Cause : ${res.cause} </p> <br>`
+                    }
+                    if (res.studio){
+                        html += `<p> Studio : ${res.studio} </p> <br>`
+                    }
+                    note.querySelector('div').innerHTML = html
+                }
+            })
             clearTimeout(timex);
         }
     });
         
-    $('.red-btn').dblclick(function(){
+    function restart(){
         hours =0;      mins =0;      seconds =0;
         $('#hours','#mins').html('00:');
         $('#seconds').html('00');
-    });
+    }
     
     function startTimer(){
     timex = setTimeout(function(){
@@ -108,15 +165,19 @@ if(document.querySelector('.red-btn')){
     },1000);
     }
 
+    // for the teacher click 
     teachers = document.querySelectorAll(".teacher")
     teachers.forEach(e=>{
         e.addEventListener('click' , ()=>{
+            teacher_selected = true
             $.ajax({
                 type:"GET",
                 url:"get_teacher/"+e.dataset.id,
                 success:(res)=>{
+                    console.log(res);
                     document.querySelector('#teacher-name').innerText = res.teacher.name
                     document.querySelector('#teacher-image').src = 'media/'+ res.teacher.image
+                    document.querySelector('#teacher_id').value = res.teacher.id
                 }
             })
         })
@@ -149,4 +210,58 @@ if(document.querySelector('.red-btn')){
         })
     })
 
+}
+
+if(document.getElementById('aprovework')){
+    aprovework.addEventListener('click' , ()=>{
+        cards = document.querySelectorAll('.card')
+        cards.forEach(e=>{
+            if(e.querySelector('.aproved')){
+                e.style = ' display:flex; '
+            }else{
+                e.style = ' display:none; '
+            }
+        })
+    })
+}
+
+if(document.getElementById('rejectedwork')){
+    rejectedwork.addEventListener('click' , ()=>{
+        cards = document.querySelectorAll('.card')
+        cards.forEach(e=>{
+            if(e.querySelector('.rejected')){
+                e.style = ' display:flex; '
+            }else{
+                e.style = ' display:none; '
+            }
+        })
+    })
+}
+
+if(document.getElementById('all_work')){
+    all_work.addEventListener('click' , ()=>{
+        cards = document.querySelectorAll('.card')
+        cards.forEach(e=>{
+            e.style = ' display:flex; '
+        })
+    })
+}
+
+if(document.querySelector('.filter')){
+    filters = document.querySelectorAll('.filter')
+    filters.forEach(e=>{
+        e.addEventListener('click' , (event)=>{
+            if(e.classList.contains('btn-white')){
+                filters.forEach(e=>{
+                    e.classList.remove('label')
+                    if (!e.classList.contains('btn-white')){
+                        e.classList.add('btn-white')
+                    }
+                })
+                e.classList.remove('btn-white')
+                e.classList.add('label')
+
+            }
+        })
+    })
 }

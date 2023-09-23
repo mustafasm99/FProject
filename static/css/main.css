@@ -391,3 +391,40 @@ select{
 /* option{
     font-size: 25px;
 } */
+.fixed{
+    position: fixed;
+    z-index: 9;
+}
+.shadow{
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+.rounded{
+    border-radius: var(--rounder);
+}
+.box-1{
+    width: fit-content;
+    height: fit-content;
+    padding: 10px;
+    opacity: 0;
+    overflow: hidden;
+    transition: 500ms ease-out;
+    background-color: var(--bg);
+    font-size: 18;
+    font-weight: 900;
+    color: var(--btn);
+}
+.end{
+    justify-items:flex-end;
+    justify-content: flex-end;
+}
+.flex-s{
+    width: 390px;
+}
+
+.full-width{
+    width: 100%;
+    background-color: #2C59B2;
+}
+.login-form{
+    background-color: white;
+}

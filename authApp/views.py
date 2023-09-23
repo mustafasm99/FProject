@@ -13,8 +13,21 @@ def login_page(e):
         user = authenticate(e , username=username , password = password)
         if user:
             login(e , user)
-            if Emploeey.objects.filter(user = user).first():
+            if Emploeey.objects.filter(user = e.user).first():
                 return redirect("/home_emp")
+            if studio_manger.objects.filter(user = e.user).first():
+                return redirect("/home_studio")
             return redirect("/home_teamleader")
-    return render(e , 'authApp/home.html')
+    if not e.user.is_authenticated:
+        return render(e , 'authApp/home.html')
+    else:
+        if Emploeey.objects.filter(user = e.user).first():
+            return redirect("/home_emp")
+        elif studio_manger.objects.filter(user = e.user).first():
+            return redirect("/home_studio")
+        elif teamleader.objects.filter(user = e.user).first():
+            return redirect('/home_teamleader')
+        else:
+            logout(e)
+            return render(e , 'authApp/home.html')
     
