@@ -133,9 +133,10 @@ class works(models.Model):
         return datetime.strptime(self.work_total_time , "%H:%M:%S") + datetime.strptime(obj.work_total_time , "%H:%M:%S")
     
     def get_teamleader(self):
-        return  teamleader.objects.filter(
-            id = self.emploeey.teamleader,
-        ).first()
+        x = teamleader.objects.filter(
+            id = self.emploeey.teamleader.id,
+        ).first() if self.emploeey else 'no teamleader'
+        return x
     
     def get_manager(self):
         return self.studio_manger.user.username if self.studio_manger else "no manger work not studio"

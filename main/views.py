@@ -231,6 +231,31 @@ def tools(e):
             data_frame.to_excel(res, index=False)
             return res
             # return JsonResponse(data , safe=False)
+
+        elif e.POST['work']:
+            data = works.objects.all()
+            temp = []
+            for i in data:
+                toFrame = {
+                    'id':i.id,
+                    'Teacher':i.teacher,
+                    'Emploeey':i.emploeey,
+                    'Studio manger': i.studio_manger,
+                    'studio':i.studio,
+                    'start_time':i.start_time,
+                    'end_time':i.end_time,
+                    'total time':i.work_total_time(),
+                    'date':i.date,
+                    'cause':i.cause,
+                    'type':i.type,
+                    'Team leader':i.get_teamleader()
+                }
+                temp.append(toFrame)
+            frame = pd.DataFrame(temp)
+            res = HttpResponse(content_type = "application/ms-excel")
+            res['Content-Disposition'] = f'attachemnt; filename = Work_{datetime.datetime.now().strftime("%Y_%M_%D|%H_%M_%S")}.xlsx'
+            frame.to_excel(res, index=False)
+            return res
         else:
             HttpResponse("BAND REQUEST")
     else:
