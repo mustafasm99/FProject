@@ -5,10 +5,30 @@ from django.shortcuts import render
 
 # Register your models here.
 class worksD(admin.ModelAdmin):
-    list_display = [ 'teacher','emploeey' , 'studio_manger' , 'studio' ,'start_time' , 'end_time' , 'date' , 'cause' , 'type' , 'work_total_time' , 'get_teamleader']
+    list_display = [ 'teacher','emploeey' , 'studio_manger' , 'studio' , 'is_prove' ,'start_time' , 'end_time' , 'date' , 'cause' , 'type' , 'work_total_time' , 'get_teamleader']
     search_fields = ['teacher' , 'emploeey' , 'studio_manger' , 'studio']
     list_filter = ['studio' , 'cause' , 'type']
     change_list_template = "admin/work.html"
+    
+    # 30/9 Editing 
+    actions = ['PROVE' , 'REJECT']
+    
+    def PROVE(self , request , data):
+        for i in data:
+            i.is_prove = True
+            i.save()
+        self.message_user(request , message = f"{len(data)} work been proved")
+        return None
+    
+    def REJECT(self , request , data):
+        for i in data:
+            i.is_prove = False
+            i.save()
+        self.message_user(request , message = f"{len(data)} work been rejected")
+        return None
+            
+    REJECT.short_description = "REJECT selected works"
+    PROVE.short_description = "PROVE selected works"
 
 class studioD(admin.ModelAdmin):
     list_display = ['name']

@@ -11,5 +11,6 @@ urlpatterns = [
     path('requred' , Requred , name='requred'),
     path('home_studio' , home_studio , name="home_studio"),
     path('nework_studio' , nowork_studio , name='nework_studio'),
-    path('tools' , tools , name='tools')
+    path('tools' , tools , name='tools'),
+    path('excel' , from_excel , name="excel")
 ]

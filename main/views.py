@@ -99,8 +99,13 @@ def New_work(e):
 
 # these function for get the teacher info API 
 def get_teacher(e,id):
+    if teacher.objects.filter(id = id).first().image:
+        data = teacher.objects.filter(id = id ).values("name" , "image" ,"id").first()
+    else:
+        data = teacher.objects.filter( id = id ).values("name" , "id").first()
+        data['image'] = "acc.jpg"
     return JsonResponse({
-        "teacher":teacher.objects.filter( id = id ).values("name" , "image" , "id").first()
+        "teacher":data
     })
 
 
@@ -260,3 +265,48 @@ def tools(e):
             HttpResponse("BAND REQUEST")
     else:
         return HttpResponse("ERORR")
+   
+   
+from django.core.files.uploadedfile import SimpleUploadedFile
+from pathlib import Path 
+    
+def from_excel(e):
+    from FProject.settings import BASE_DIR
+    file = BASE_DIR/'static/Users.xlsx'
+    p = pd.read_excel(file , sheet_name='Sheet2')
+    passwords = []
+    img = BASE_DIR/'static/img/acc.jpg'
+    image_file = SimpleUploadedFile(name=img.name, content=open(str(img), 'rb').read())
+    for index , i in enumerate(p['Production']):
+        try:
+            full_name = i.strip().split(" ")
+            # print(full_name)
+            passwords.append({
+                "user name": full_name[0]+"_"+full_name[1],
+                "password" : full_name[0]+full_name[1]+str(index+1)
+                
+                })  
+        
+            user = User.objects.create_user(
+                username=full_name[0]+"_"+full_name[1],
+                first_name = full_name[0],
+                last_name = full_name[1],
+                password=full_name[0]+full_name[1]+str(index+1)
+            )
+        
+            Emploeey.objects.create(
+                user = user,
+                image = image_file,
+                teamleader = teamleader.objects.filter(user = User.objects.filter(username = "Production").first()).first()
+            )
+        except:
+            pass
+        
+    newExcel = pd.DataFrame(passwords)
+    
+    res = HttpResponse(content_type = "application/ms-excel")
+    res['Content-Disposition'] = f'attachemnt; filename = Production.xlsx'
+    newExcel.to_excel(res, index=False)
+    return res
+    
+    return HttpResponse("done")

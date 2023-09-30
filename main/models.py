@@ -59,7 +59,7 @@ class teamleader(models.Model):
 
 class teacher(models.Model):
     name = models.CharField(max_length=120 )
-    image = models.ImageField(upload_to="timage/")
+    image = models.ImageField(upload_to="timage/" , null=True , blank=True)
     stage = models.ForeignKey('stages' , on_delete=models.CASCADE)
     materials = models.ForeignKey('materials' , on_delete=models.CASCADE)
 
@@ -189,4 +189,5 @@ class studio_manger(models.Model):
     def get_all_works(self):
         return works.objects.filter(studio_manger = self).all().order_by('-id')
     
-        
+
+
