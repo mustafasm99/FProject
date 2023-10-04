@@ -78,10 +78,10 @@
                         Teachers Names
                     </h3>
                 </div>
-                <div class="container flex-col center main-holder">
+                <div class="container  center main-holder">
                     {% for i in teachers %}
     
-                <div class="flex space-btw teacher" data-id="{{i.id}}">
+                <div class="flex space-btw teacher" style = " height:fit-content " data-id="{{i.id}}">
                     <div class="themp-image mx-2">
                         {% if i.image%}
                         <img src="{{i.image.url}}" alt="" class="image">
@@ -94,7 +94,8 @@
                             {{i.name}}
                         </h3>
                         <h3 class="text">
-                            Subject : {{i.materials}}
+                            Subject : {{i.materials}} <br>
+                            stage : {{i.stage}}
                         </h3>
                     </div>
                 </div>

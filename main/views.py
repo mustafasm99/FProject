@@ -267,6 +267,8 @@ def tools(e):
         return HttpResponse("ERORR")
    
    
+# code for uploads users with excel 
+   
 from django.core.files.uploadedfile import SimpleUploadedFile
 from pathlib import Path 
     

@@ -27,6 +27,9 @@ if(document.querySelector('#username')){
 teacher_selected = false
 
 if(document.getElementById('all-request')){
+
+    
+
     cards = document.querySelectorAll('.card')
     // all requests 
     all_requrst = document.querySelector('#all-request').addEventListener('click' , ()=>{
@@ -57,15 +60,48 @@ if(document.getElementById('all-request')){
     })
 }
 
+var running = false
+
 // for the record and timer functions 
-
 if(document.querySelector('.red-btn')){
-    var hours =0;
-    var mins =0;
-    var seconds =0;
-    var running = false
+    var startTimer;
+    var stopTimer;
 
-    
+    // <-> timer <-> //
+
+    function numberZ(num){
+        return num < 10 ? "0"+num :num.toString();
+    }
+
+    function updateTimer(){
+        var startTime = new Date();
+        function displayTime (){
+            var currentT = new Date();
+            var elapsedT = currentT - startTime;
+
+            // Calculate hours, minutes, and seconds
+            var hours = Math.floor(elapsedT / 3600000);
+            var minutes = Math.floor((elapsedT % 3600000) / 60000);
+            var seconds = Math.floor((elapsedT % 60000) / 1000);
+
+            // Format the numbers as two-digit strings
+            var formattedHours = numberZ(hours);
+            var formattedMinutes = numberZ(minutes);
+            var formattedSeconds = numberZ(seconds);
+
+            $('#hours').text(('0' + formattedHours).slice(-2) + ':');
+            $('#min').text(('0' + formattedMinutes).slice(-2) + ':');
+            $('#sec').text(('0' + formattedSeconds).slice(-2));
+
+        }
+
+        var timerIn = setInterval(displayTime , 1000)
+
+        stopTimer = function () {
+            clearInterval(timerIn)
+        }
+    }
+
     $('.red-btn').click(function(){
         if(!teacher_selected){
             alert("يجب اختيار استاذ")
@@ -82,7 +118,7 @@ if(document.querySelector('.red-btn')){
             }
         }
         if(!running){
-            startTimer();
+            updateTimer();
             $('.red-btn').html("<h1> STOP </h1>")
             running = true
             $.ajax({
@@ -105,7 +141,7 @@ if(document.querySelector('.red-btn')){
         }else{
             $('.red-btn').html("<h1> REC. </h1>")
             running = false
-            restart()
+            stopTimer()
             $.ajax({
                 type:"GET",
                 url:"/requred",
@@ -134,42 +170,21 @@ if(document.querySelector('.red-btn')){
                     note.querySelector('div').innerHTML = html
                 }
             })
-            clearTimeout(timex);
+            // clearTimeout(timex);
         }
     });
         
-    function restart(){
-        hours =0;      mins =0;      seconds =0;
-        $('#hours','#mins').html('00:');
-        $('#seconds').html('00');
-    }
     
-    function startTimer(){
-    timex = setTimeout(function(){
-        seconds++;
-        if(seconds >59){seconds=0;mins++;
-            if(mins>59) {
-            mins=0;hours++;
-            if(hours <10) {$("#hours").text('0'+hours+':')} else $("#hours").text(hours+':');
-            }               
-        if(mins<10){                     
-            $("#min").text('0'+mins+':');}       
-            else $("#min").text(mins+':');
-                    }    
-        if(seconds <10) {
-            $("#sec").text('0'+seconds);} else {
-            $("#sec").text(seconds);
-            }
-        
-        startTimer();
-    },1000);
-    }
 
     // for the teacher click 
     teachers = document.querySelectorAll(".teacher")
     teachers.forEach(e=>{
         e.addEventListener('click' , ()=>{
             teacher_selected = true
+            if(running){
+                alert(" لايمكن تغير الاستاذ والعداد يعمل ")
+                return
+            }
             $.ajax({
                 type:"GET",
                 url:"get_teacher/"+e.dataset.id,
