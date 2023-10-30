@@ -14,3 +14,4 @@ urlpatterns = [
     path('tools' , tools , name='tools'),
     # path('excel' , from_excel , name="excel")
 ]
+   

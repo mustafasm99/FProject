@@ -238,7 +238,23 @@ def tools(e):
             # return JsonResponse(data , safe=False)
 
         elif e.POST['work']:
-            data = works.objects.all()
+            Type = e.POST.get("Type")
+            if  Type == "reject":
+                data = works.objects.filter(is_prove = False).all() 
+            elif Type == "approv":
+                data = works.objects.filter(is_prove = True).all()
+            elif Type == "Nowork":
+                data = []
+                for i in Emploeey.objects.all():
+                    if len(i.get_all_works()) == 0:
+                        data.append({"user":i.user.username})
+                frame = pd.DataFrame(data)
+                res = HttpResponse(content_type = "application/ms-excel")
+                res['Content-Disposition'] = f'attachemnt; filename = Work_{datetime.datetime.now().strftime("%Y_%M_%D|%H_%M_%S")}.xlsx'
+                frame.to_excel(res, index=False)
+                return res
+            else :
+                data = works.objects.all()
             temp = []
             for i in data:
                 toFrame = {
@@ -253,7 +269,8 @@ def tools(e):
                     'date':i.date,
                     'cause':i.cause,
                     'type':i.type,
-                    'Team leader':i.get_teamleader()
+                    'Team leader':i.get_teamleader(),
+                    "State":i.is_prove
                 }
                 temp.append(toFrame)
             frame = pd.DataFrame(temp)

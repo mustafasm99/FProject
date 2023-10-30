@@ -428,3 +428,52 @@ select{
 .login-form{
     background-color: white;
 }
+.space-between{
+    justify-content: space-between;
+}
+
+.Team_Leader_img{
+    margin-top: 40px;
+    width: 100px;
+    height: 100px;
+    border-radius:50%;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+
+.Team_Leader_img img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+}
+.home-icon button{
+    background: transparent;
+    border: none;
+    width: 70px;
+    height: 70px;
+}
+
+.home-icon button img{
+    height: 50%;
+    width: 50%;
+}
+.tholder p{
+    margin: 15px 0;
+    font-weight: 900;
+    text-align: center;
+}
+.line{
+    height: 3px;
+    width: 100%;
+    background-color: #C0C0C0;
+}
+.section-head{
+   font-weight: 900;
+   font-size: 13px;
+}
+.space-around{
+    justify-content: space-around;
+}
+

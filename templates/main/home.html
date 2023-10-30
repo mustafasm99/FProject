@@ -2,155 +2,33 @@
 {% block title %} HOME {% endblock title %} HOME 
 {% block body %}
 {%load static%}
-<div class="main-container ">
-    <div class="flex  flex-50">
-        <div class="profile-image">
-            <img src="{{teamleader.image.url}}" alt="" class="image">
-        </div>
-        <div class="flex center " style="margin: 0 10px;" >
-            <h3 class="mx-1 text" style="height: fit-content;">
-                Team Leader Name : <span>{{teamleader}}</span>
-            </h3> <br>
-            <h3>
-                <a href="{% url 'LOGOUT' %}">LOG OUT</a>
-                <a class="mx-1" href="{% url 'home' %}"><i class="fa-solid fa-house"></i></a>
-            </h3>
-        </div>
-    </div>
-    
-    <div class="filter-holder flex-50">
-        <div class="label felx center" id="all-request">
-            <h4 class="filter">
-                All Requests
-            </h4>   
+<div class="container">
+    <div class="flex space-between">
+        <div class="home-icon">
+        <button ><img src="{%static 'icon/home.svg'%}" alt=""></button>
         </div>
 
-        <div class="label felx center" id="reject-request">
-            <h4 class="filter">
-                Reject Requests
-            </h4>   
-        </div>
-
-        <div class="label felx center" id="aprove-request">
-            <h4 class="filter">
-                Aprove Requests
-            </h4>   
-        </div>
-    </div>
-</div>
-
-<div class="container flex-nowrap my-1" style="align-items: flex-start;">
-    <aside class="aside" >
-    
-        <div class="label center flex">
-            <h3>
-                Employee Names
-            </h3>
-        </div>
-       
-        <div class="container flex-col center main-holder">
-            {% for i in teamleader.get_all_emploey %}
-                <div class="flex space-btw ">
-                    <div class="themp-image mx-2">
-                        {% if i.image%}
-                        <img src="{{i.image.url}}" alt="" class="image">
-                        {% else %}
-                        <img src="{% static 'img/acc.jpg'%}" alt="">
-                        {% endif %}
-                    </div>
-                    <h3 class="text mx-2">
-                        {{i.user.username}}
-                    </h3>
-                    <h3 class="mx-2">
-                        <form action="" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="id" value="{{i.id}}">
-                            <button class="btn" type="submit" name="delete" value="true" style="height: auto;">
-                                <i class="fa-solid fa-trash" style="color: #4c00ff;"></i>
-                            </button>
-                        </form>
-                    </h3>
-                </div>
-            {% endfor %}
-        </div>
-        <div class="flex center label">
-            <a href="{%url 'newemp'%}">
-                Add new Employee +
-            </a>
-        </div>
-    </aside>
-
-    <div class="container flex cards-holder" >
-        {% for i in teamleader.get_all_Requests %}
-            <div class="card flex-col center">
-                <div class="mid-image">
-                    {% if i.emploeey.image%}
-                    <img src="{{i.emploeey.image.url}}" alt="" class="image">
-                    {% else %}
-                    <img src="{% static 'img/acc.jpg'%}" alt="">
-                    {% endif %}
-                </div>
-                <div class="container info-holder">
-                    <p class="text"> Emploeey Name : <span>{{i.emploeey}}</span> </p>
-                    <p class="text"> Teacher Name : <span>{{i.teacher}}</span> </p>
-                    <p class="text"> Time recored start : <span>{{i.start_time}}</span> </p>
-                    <p class="text"> Time recored end : <span>{{i.end_time}}</span> </p>
-                    <p class="text"> Date : <span>{{i.date}}</span></p>
-                    <p class="text"> Total Time : <span>{{i.work_total_time}}</span></p>
-                </div>
-                <div class="flex space-btw">
-                    {% if i.is_prove == False%}
-                    
-                    <input type="hidden" name="rejected" class="rejected">
-                    <form action="" method="post">
-                        {% csrf_token %}
-                        <div class="btn-aprove">
-                            <button class="btn" style="height: auto;" name="toaprove" value="{{i.id}}">
-                            To Approved
-                            </button>
-                        </div>
-                    </form>
-                    <div class="btn-reject" >
-                        <p> Rejected </p>
-                    </div>
-
-                    {% elif i.is_prove == True %}
-                    <input type="hidden" name="rejected" class="aproved">
-                    <form action="" method="post">
-                        {% csrf_token %}
-                        <div class="btn-reject">
-                            <button class="btn" style="height: auto;" name="toareject" value="{{i.id}}">
-                            To reject
-                            </button>
-                        </div>
-                    </form>
-                    <div class="btn-aprove" >
-                        <p> Approved </p>
-                    </div>
-                    {% else %}
-
-                    <form action="" method="post">
-                        {% csrf_token %}
-                        <div class="btn-reject">
-                            <button class="btn" style="height: auto;" name="toareject" value="{{i.id}}">
-                                reject
-                            </button>
-                        </div>
-                    </form>
-                    <form action="" method="post">
-                        {% csrf_token %}
-                        <div class="btn-aprove">
-                            <button class="btn" style="height: auto;" name="toaprove" value="{{i.id}}">
-                                Approved
-                            </button>
-                        </div>
-                    </form>
-
-                    {%endif%}
-                </div>
+        <div class="tholder">
+            <div class="Team_Leader_img">
+                <img src="{{teamleader.image.url}}" alt="">
             </div>
-        {%endfor%}
+            <p>{{teamleader}}</p>
+        </div>
+
+        <div class="home-icon">
+            <button><img src="{%static 'icon/logout.svg'%}" alt=""></button>
+        </div>
     </div>
+
+    <div class="flex space-around">
+        <div class="section-head">All Work</div>
+        <div class="section-head">Approved Work</div>
+        <div class="section-head">Rejected Work</div>
+        <div class="section-head">Employes</div>
+    </div>
+    <div class="line">
+    </div>
+
 </div>
 
 {% endblock body %}
