@@ -2,13 +2,24 @@
     {%for i in data%}
     <div class="flex space-between empl">
         <div class="flex start" style="flex:30%">
-            <div class="" >
-                <img src="{{i.imge.url}}" alt="">
+            <div class="emp_image" >
+                <img src="{{i.image.url}}" alt="">
             </div>
         </div>
-        <div class ="flex center_flex" style="flex:30%" >{{i}}</div>
-        <div class="flex end" style="flex:30%"><i class="fa-solid fa-trash" style="color: #000000;"></i></div>
+        <div class ="flex center_flex " style="flex:30%" >
+            <h3>
+                {{i}}
+            </h3>
+        </div>
+        <div class="flex end" style="flex:30%">
+            <form action="" method="post">
+                {%csrf_token%}
+                <input type="hidden" name="id" value="{{i.id}}">
+                <button class="section-head" type="submit" name="delete" value="true">
+                    <i class="fa-solid fa-trash" style="color: #000000;"></i>
+                </button>
+            </form>
+        </div>
     </div>
-    <hr>
     {%endfor%}
 </div>

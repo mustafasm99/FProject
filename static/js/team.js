@@ -9,6 +9,7 @@ function buttonClick(button){
     if(button.className == "green"){
         approve(button.value)
     }
+    
 }
 cstoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
 
@@ -59,8 +60,8 @@ buttonsFilters.forEach(e => {
         // these for moving the line 
         var line = document.getElementById("LINE")
         line.style = `
-        left:${e.offsetLeft - (e.offsetWidth + (e.offsetWidth/2))}px;
-        width:${e.offsetWidth}px;
+        left:${e.offsetLeft - ((e.offsetWidth*1.5))}px;
+        
         `
         if(e.value == "Approve"){
             ApproveWork()
@@ -70,6 +71,9 @@ buttonsFilters.forEach(e => {
         }
         else if (e.value == "Employes"){
             Employes()
+        }
+        else if (e.value == "all"){
+            All_works()
         }
     })
 });
@@ -82,7 +86,14 @@ function ApproveWork(){
             "approve":true
         },
         success:function(html){
-            document.querySelector(".grid-card").innerHTML = html
+            divs = document.querySelectorAll(".grid-card div")
+            divs.forEach(e=>{
+                e.style = "opacity: 0;"
+                // e.remove()
+            })
+            setTimeout(function(){
+                document.querySelector(".grid-card").innerHTML = html
+            },400)
         }
     })
 }
@@ -95,7 +106,14 @@ function RejectedWork(){
             "reject":true
         },
         success:function(html){
-            document.querySelector(".grid-card").innerHTML=html
+            divs = document.querySelectorAll(".grid-card div")
+            divs.forEach(e=>{
+                e.style = "opacity: 0;"
+                // e.remove()
+            })
+            setTimeout(function(){
+                document.querySelector(".grid-card").innerHTML = html
+            },400)
         }
     })
 }
@@ -108,7 +126,34 @@ function Employes(){
             "Employes":true
         },
         success:function(html){
-            document.querySelector(".grid-card").innerHTML=html
+            divs = document.querySelectorAll(".grid-card div")
+            divs.forEach(e=>{
+                e.style = "opacity: 0;"
+                // e.remove()
+            })
+            setTimeout(function(){
+                document.querySelector(".grid-card").innerHTML = html
+            },400)
+        }
+    })
+}
+
+function All_works(){
+    $.ajax({
+        type:"GET",
+        url:"/filters",
+        data:{
+            "all":true
+        },
+        success:function(html){
+            divs = document.querySelectorAll(".grid-card div")
+            divs.forEach(e=>{
+                e.style = "opacity: 0;"
+                // e.remove()
+            })
+            setTimeout(function(){
+                document.querySelector(".grid-card").innerHTML = html
+            },400)
         }
     })
 }

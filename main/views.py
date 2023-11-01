@@ -335,7 +335,9 @@ def from_excel(e):
 def filter_works(e):
     if e.method == "GET":
         print(e.GET)
-        
+        if "all" in e.GET:
+            data = teamleader.objects.filter(user = e.user).first()
+            return render(e , "main/filter.html" , {"teamleader":data.get_all_Requests() , "teamleaderUser":data})
         if "approve" in e.GET:
             data = teamleader.objects.filter(user = e.user).first()
             return render(e , "main/filter.html" , {"teamleader":data.get_all_Aprove() , "teamleaderUser":data})

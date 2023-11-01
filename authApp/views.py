@@ -30,4 +30,6 @@ def login_page(e):
         else:
             logout(e)
             return render(e , 'authApp/home.html')
+
+
     

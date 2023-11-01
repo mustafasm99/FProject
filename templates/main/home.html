@@ -5,24 +5,24 @@
 <div class="container">
     <div class="flex space-between">
         <div class="home-icon">
-        <button ><img src="{%static 'icon/home.svg'%}" alt=""></button>
+        <button ><a href="{% url 'home_emp' %}"><img src="{%static 'icon/home.svg'%}" alt=""></a></button>
         </div>
 
         <div class="tholder">
             <div class="Team_Leader_img">
-                <img src="{{teamleader.image.url}}" alt="">
+                <img src="{{ teamleader.image.url }}" alt="">
             </div>
             <p>{{teamleader}}</p>
         </div>
 
         <div class="home-icon">
-            <button><img src="{%static 'icon/logout.svg'%}" alt=""></button>
+            <button><a href="{%url 'LOGOUT'%}"><img src="{%static 'icon/logout.svg'%}" alt=""></a></button>
         </div>
     </div>
 
     <div class="flex space-around">
         <div>
-            <button class="section-head ">All Work</button>
+            <button class="section-head " value="all">All Work</button>
             <div class="line-btn" id="LINE"></div>
         </div>
         
