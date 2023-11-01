@@ -12,6 +12,7 @@ urlpatterns = [
     path('home_studio' , home_studio , name="home_studio"),
     path('nework_studio' , nowork_studio , name='nework_studio'),
     path('tools' , tools , name='tools'),
+    path("filters" , filter_works , name='filter_works')
     # path('excel' , from_excel , name="excel")
 ]
    

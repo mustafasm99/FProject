@@ -9,7 +9,7 @@ from django.http import JsonResponse , HttpResponse
 # Register your models here.
 class worksD(admin.ModelAdmin):
     list_display = [ 'teacher','emploeey' , 'studio_manger' , 'studio' , 'is_prove' ,'start_time' , 'end_time' , 'date' , 'cause' , 'type' , 'work_total_time' , 'get_teamleader']
-    search_fields = ['teacher' , 'emploeey' , 'studio_manger' , 'studio']
+    search_fields = ['teacher__name' , 'emploeey__user__username' , 'studio_manger__user__username' , 'studio__name']
     list_filter = ['studio' , 'cause' , 'type']
     change_list_template = "admin/work.html"
     

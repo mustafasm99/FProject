@@ -56,7 +56,16 @@ class teamleader(models.Model):
         return works.objects.filter(
             emploeey__in = self.get_all_emploey()
         ).all().order_by('-id')
-
+    def get_all_Aprove(self):
+        return works.objects.filter(
+            emploeey__in = self.get_all_emploey(),
+            is_prove = True
+        )
+    def get_all_Reject(self):
+        return works.objects.filter(
+            emploeey__in = self.get_all_emploey(),
+            is_prove = False
+        )
 class teacher(models.Model):
     name = models.CharField(max_length=120 )
     image = models.ImageField(upload_to="timage/" , null=True , blank=True)

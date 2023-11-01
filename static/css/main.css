@@ -13,8 +13,9 @@
     font-family:Inter;
 }
 body ,html{
-    background-color: var(--bg);
+    
     padding:10px ;
+    overflow-x: hidden;
 }
 .flex{
     display: flex;
@@ -468,12 +469,109 @@ select{
     height: 3px;
     width: 100%;
     background-color: #C0C0C0;
+    position: relative;
 }
 .section-head{
    font-weight: 900;
    font-size: 13px;
+   padding-bottom: 5px;
+   border-bottom:solid black 3px; 
+   width:95px ;
+   text-align: center;
+   position: relative;
+   top:3px;
+   background-color: transparent;
+   border: none;
+   z-index: 2;
+}
+.active{
+    border-bottom: #3D059E solid 3px;
 }
 .space-around{
     justify-content: space-around;
 }
 
+.card_em{
+   width: 230px;
+   height:280px;
+   overflow: hidden; 
+   border-radius: 20px;  
+   text-align: center;
+    margin: 10px auto;
+    padding: 10px;
+    text-align: center;
+    background-color:#EBEBEB;
+    border:#707070;
+  }
+
+
+.card_em p{
+      margin:8px 0;
+    }
+
+
+.card_em_img{
+    display: flex;
+    width: 70px;
+    height: 70px;
+    margin-top: 12px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    margin: 0 auto;
+}
+
+
+.grid-card{
+    display:grid;
+    grid-template-columns: repeat( auto-fit,minmax(230px , 1fr) );
+    width: 90%;
+    height:fit-content;
+    /* gap: 10px; */
+    margin: 30px auto;
+}
+
+.green{
+    background-color: #00A839;
+    border-radius: 30px;
+    color: white;
+    font-weight: 600;
+    width:80px;
+    height:30px;
+    margin: 0 5px;
+    border: none;
+}
+.red{
+    background-color: #D92546;
+    border-radius: 30px;
+    color: white;
+    font-weight: 600;
+    width:80px;
+    height:30px;
+    margin: 0 5px;
+    border: none;
+}
+.line-btn{
+    width: 90px;
+    height: 3px;
+    background-color: #3D059E;
+    position: relative;
+    left: 6px;
+    transition: 450ms all ease-out;
+}
+
+.card_employes{
+    display: flex;
+    width: max-content;
+    height: inherit;
+
+}
+.start{
+    justify-content: flex-start;
+}
+.center_flex{
+    justify-content: center;
+}
+.end{
+    justify-content: flex-end;
+}

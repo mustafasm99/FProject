@@ -1,0 +1,25 @@
+
+{%for data in teamleader%}
+        <div class="card_em">
+            <div class="card_em_img">
+            <img src="{{data.emploeey.image.url}}" alt="">
+            </div>
+                <p>{{data.emploeey.user}}</p>
+                <p>{{teamleaderUser}}</p>
+                <p>{{data.start_time}}</p>
+                <p>{{data.end_time}}</p>
+                <p>{{data.date}}</p>
+            
+                {% if data.is_prove == True %}
+                <button onclick="buttonClick(this)" id="reject{{data.id}}" class="red"  value="{{data.id}}">Rejected</button>
+                
+                {%elif data.is_prove == False %}
+                <button onclick="buttonClick(this)" id="approve{{data.id}}" class="green"  value="{{data.id}}">Approve</button>
+                {%else%}
+                
+                <button onclick="buttonClick(this)" id="approve{{data.id}}" class="green"  value="{{data.id}}">Approve</button>
+                <button onclick="buttonClick(this)" id="reject{{data.id}}" class="red"  value="{{data.id}}">Rejected</button>
+                {%endif%}
+          
+        </div>
+    {%endfor%}

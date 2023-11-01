@@ -20,6 +20,7 @@ def home_teamleader(e):
                 return redirect('/home_teamleader')
             # the action to make the request aprove 
             if e.POST.get('toaprove'):
+                print('hi')
                 prove = works.objects.get(id = e.POST['toaprove'])
                 prove.is_prove = True 
                 prove.save()
@@ -329,3 +330,20 @@ def from_excel(e):
     return res
     
     return HttpResponse("done")
+
+
+def filter_works(e):
+    if e.method == "GET":
+        print(e.GET)
+        
+        if "approve" in e.GET:
+            data = teamleader.objects.filter(user = e.user).first()
+            return render(e , "main/filter.html" , {"teamleader":data.get_all_Aprove() , "teamleaderUser":data})
+        elif "reject" in e.GET:
+            data = teamleader.objects.filter(user = e.user).first()
+            return render(e , "main/filter.html" , {"teamleader":data.get_all_Reject() , "teamleaderUser":data})
+        elif "Employes" in e.GET:
+            data = teamleader.objects.filter(user =e.user).first()
+            return render(e,"main/employes.html",{"data":data.get_all_emploey()})
+    else:
+        return JsonResponse({"stats":"no POST Request"})
