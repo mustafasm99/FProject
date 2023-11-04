@@ -1,87 +1,61 @@
 {% extends "base.html" %}
 {% block body %}
 {%load static%}
-<div class="main-container ">
-    <div class="flex  flex-50">
-        <div class="profile-image">
-            {% if emp.image%}
-            <img src="{{emp.image.url}}" alt="" class="image">
-            {% else %}
-            <img src="{% static 'img/acc.jpg' %}" alt="" class="image">
-            {% endif %}
-        </div>
-        <div class="flex-col center" style="width: fit-content;margin: 0;">
-            <div class="flex center " style="margin: 0 10px;" >
-                <h3 class="mx-1 text" style="height: fit-content;">
-                    Employ Name : <span>{{emp}}</span>
-                    <h3>
-                        <a href="{% url 'LOGOUT' %}">LOG OUT</a>
-                        <a href="{% url 'home' %}"><i class="fa-solid fa-house"></i></a>
-                    </h3>
-                </h3>
-            </div>
-            <div class="flex my-1">
-                <h3 class=" text">
-                    Team leader : <span>{{emp.teamleader}}</span>
-                </h3>
-            </div>
-        </div>
-    </div>
-    
-    
-    <div class="flex flex-50 center">
-        <div class="center">
-            <div class="label flex center btn-padding">
-                <h4 class="">
-                    <a href="{% url 'nework' %}">New work +</a>
-                </h4>
-            </div>
-        </div>
-    </div>
 
-
-</div>
-<div class="flex center sp-around my-2">
-    <div class="filter btn-padding mx-1 label">
-        <h3 id="all_work" >All work</h3>
-    </div>
-    <div class="filter btn-padding mx-1 btn-white">
-        <h3 id="rejectedwork"> Rejected work </h3>
-    </div>
-    <div class="filter btn-padding mx-1 btn-white">
-        <h3 id="aprovework"> Approved work </h3>
-    </div>
-</div>
-
-<div class="flex center my-1 mx-1">
-    {% for i in emp.get_all_works %}
-    <div class="card flex-col center">
-        <div class="mid-image">
-            {% if i.teacher.image%}
-            <img src="{{i.teacher.image.url}}" alt="" class="image">
-            {% else %}
-            <img src="{% static 'img/acc.jpg'%}" alt="">
-            {% endif %}
+<div class="container">
+    <div class="flex space-between">
+        <div class="home-icon">
+            <button><a href="{%url 'home_emp' %}"><img src="{%static 'icon/home.svg'%}" alt=""></a></button>
         </div>
-        <div class="container info-holder">
-            <p class="text"> Teacher Name : <span>{{i.teacher}}</span> </p>
-            <p class="text"> Time recored start : <span>{{i.start_time}}</span> </p>
-            <p class="text"> Time recored end : <span>{{i.end_time}}</span> </p>
-            <p class="text"> Date : <span>{{i.date}}</span></p>
-            <p class="text"> Total Time : <span>{{i.work_total_time}}</span></p>
-            {% if i.is_prove == False%}
-            <input type="hidden" name="rejected" class="rejected">
-                <p class="text" >State : <span style="color:rgb(255, 67, 67)" > Rejected  </span> </p>
-            {% elif i.is_prove == True %}
-            <input type="hidden" name="rejected" class="aproved">
-            <p class="text">State : <span style="color:rgb(151, 215, 54)"> Approved </span> </p>
-            {% else %}
-                <input type="hidden" name="rejected" class="aproved">
-                <p class="text">State : <span style="color:rgb(255, 166, 1)"> Pending </span> </p>            
-            {% endif %}
+
+        <div class="tholder">
+            <div class="Team_Leader_img">
+                <img src="{{emp.image.url}}" alt="">
+            </div>
+            <p>{{emp}}</p>
         </div>
-        
+
+        <div class="home-icon">
+            <button><a href="{%url 'LOGOUT'%}"><img src="{%static 'icon/logout.svg'%}" alt=""></a></button>
+        </div>
     </div>
-    {% endfor %}
+    <div class="flex space-around">
+        <div>
+            <button class="section-head " value="all">All Work</button>
+            <div class="line-btn" id="LINE"></div>
+        </div>
+
+        <div><button class="section-head" value="Approve">Approved Work</button></div>
+        <div><button class="section-head" value="Rejected">Rejected Work</button></div>
+        <div><button class="section-head" value="NewWork">New Work +</button></div>
+
+    </div>
+<div class="line"></div>
+<input type="hidden"id ="csrf_token" value="{{csrf_token}}">
+{%csrf_token%}
+<div class="grid-card">
+    {%for i in emp.get_all_works%}
+    <div class="card_em">
+      <div class="card_em_img">
+      <img src="{{emp.image.url}}" alt="">
+      </div>
+      <p>{{emp}}</p>
+      <p>{{emp.teamleader}}</p>
+      <p>{{i.start_time}}</p>
+      <p>{{i.end_time}}</p>
+      <p>{{i.work_total_time}}</p>
+      <p>{{i.date}}</p>
+
+      {%if i.is_prove == True%}
+      <h4 class="Approved">Approved</h4>
+      {%elif i.is_prove == False%}
+      <h4 class="Rejected">Rejected</h4>
+      {%else%}
+      <h4 class="Padding">Padding</h4>
+      {%endif%}
+    </div>
+{%endfor%}
 </div>
+</div>
+<script src="{%static 'js/emp.js'%}"></script>
 {% endblock body %}

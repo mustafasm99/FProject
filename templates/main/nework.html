@@ -1,112 +1,76 @@
-{% extends "base.html" %}
 {% load static %}
-{% block body %}
 
-<div class="main-container flex-col">
-    <div class="flex center mx-1 my-2">
-        <div class="profile-image">
-            {% if emp.image%}
-            <img src="{{emp.image.url}}" alt="" class="image">
-            {% else %}
-            <img src="{% static 'img/acc.jpg' %}" alt="" class="image">
-            {% endif %}
-        </div>
-        <div class="flex-col center" style="width: fit-content;margin: 0;">
-            <div class="flex center " style="margin: 0 10px;" >
-                <h3 class="mx-1 text" style="height: fit-content;">
-                    Employ Name : <span>{{emp}}</span>
-                    <h3>
-                        <a href="{% url 'LOGOUT' %}">LOG OUT</a>
-                        <a href="{% url 'home' %}"><i class="fa-solid fa-house"></i></a>
-                    </h3>
-                </h3>
+
+<div class="flex">
+    <div class="teacher-holder fix-content1">
+        <div id="note" class="note fixed flex center shadow rounded box-1">
+            <div>
+
             </div>
-            <div class="flex my-1">
-                <h3 class=" text">
-                    Team leader : <span>{{emp.teamleader}}</span>
-                </h3>
+        </div>
+        <div class="flex center big-image" >
+            <img src="{% static 'img/acc.jpg' %}" alt="" class="image" id="teacher-image">
+        </div>
+        <div class="big-text center">
+            <h2>
+                Teacher Name : <span id="teacher-name"> None  </span>
+                <input type="hidden" id="teacher_id" value="0">
+            </h2>
+        </div>
+        <div class="flex-row center timer">
+            <div class="red-btn flex center" >
+                <h1>REC.</h1>
+            </div>
+            <div class="timer-input flex">
+                <label  id="hours">00:</label>
+                <label id="min">00:</label>
+                <label id="sec">00</label>
+            </div>
+        </div>
+    </div>
+    
+    <div class="fix-content1" >
+        <div class="flex center">
+            <div class="label flex-50">
+                <select name="subject" id="subject">
+                    <option value="">Select subject</option>
+                    {% for i in sub %}
+                        <option value="{{i}}">{{i}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="flex center" style="position: relative;">
+            <i class="fa-solid fa-magnifying-glass" style="left:15px;z-index: 9;position: absolute;color: #fff;"></i> 
+            <span style="left:35px;z-index: 9;position: absolute;color: #fff;">search</span>
+            <input type="text" id="search" class=" search-input my-2  flex-50"> 
+        </div>
+        <div class="aside" style="height: 500px;">
+            <div class="container  center main-holder">
+                {% for i in teachers %}
+
+            <div class="flex space-btw teacher" style = " height:fit-content " data-id="{{i.id}}">
+                <div class="themp-image mx-2">
+                    {% if i.image%}
+                    <img src="{{i.image.url}}" alt="" class="image">
+                    {% else %}
+                    <img src="{% static 'img/acc.jpg'%}" alt="">
+                    {% endif %}
+                </div>
+                <div class="flex-col" >
+                    <h3 class="text mx-2">
+                        {{i.name}}
+                    </h3>
+                    <h3 class="text">
+                        Subject : {{i.materials}} <br>
+                        stage : {{i.stage}}
+                    </h3>
+                </div>
+            </div>
+
+            {% endfor %}
             </div>
         </div>
     </div>
 
-    <div class="flex">
-        <div class="teacher-holder flex-50 mx-1 p-1">
-            <div id="note" class="note fixed flex center shadow rounded box-1">
-                <div>
-
-                </div>
-            </div>
-            <div class="flex  center big-image" >
-                <img src="{% static 'img/acc.jpg' %}" alt="" class="image" id="teacher-image">
-            </div>
-            <div class="big-text center">
-                <h2>
-                    Teacher Name : <span id="teacher-name" > None  </span>
-                    <input type="hidden" id="teacher_id" value="0">
-                </h2>
-            </div>
-            <div class="flex-row center timer">
-                <div class="red-btn flex center" >
-                    <h1>REC.</h1>
-                </div>
-                <div class="timer-input flex">
-                    <label  id="hours">00:</label>
-                    <label id="min">00:</label>
-                    <label id="sec">00</label>
-                </div>
-            </div>
-        </div>
-        
-        <div style="height: fit-content;">
-            <div class="flex mx-5 center">
-                <div class="label flex-50">
-                    <select name="subject" id="subject">
-                        <option value="">Select subject</option>
-                        {% for i in sub %}
-                            <option value="{{i}}">{{i}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-            <div class="flex center mx-5 my-2" style="position: relative;">
-                <i class="fa-solid fa-magnifying-glass" style="left:15px;z-index: 9;position: absolute;"></i> <span style="left:35px;z-index: 9;position: absolute;">search</span>
-                <input type="text" id="search" class="mx-5 search-input my-2  flex-50"> 
-            </div>
-            <div class="aside mx-5" style="height: 500px;">
-                <div class="label center flex">
-                    <h3>
-                        Teachers Names
-                    </h3>
-                </div>
-                <div class="container  center main-holder">
-                    {% for i in teachers %}
-    
-                <div class="flex space-btw teacher" style = " height:fit-content " data-id="{{i.id}}">
-                    <div class="themp-image mx-2">
-                        {% if i.image%}
-                        <img src="{{i.image.url}}" alt="" class="image">
-                        {% else %}
-                        <img src="{% static 'img/acc.jpg'%}" alt="">
-                        {% endif %}
-                    </div>
-                    <div class="flex-col" >
-                        <h3 class="text mx-2">
-                            {{i.name}}
-                        </h3>
-                        <h3 class="text">
-                            Subject : {{i.materials}} <br>
-                            stage : {{i.stage}}
-                        </h3>
-                    </div>
-                </div>
-    
-                {% endfor %}
-                </div>
-            </div>
-        </div>
-    
-    </div>
 </div>
-
-
-{% endblock body %}

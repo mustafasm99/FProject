@@ -349,3 +349,21 @@ def filter_works(e):
             return render(e,"main/employes.html",{"data":data.get_all_emploey()})
     else:
         return JsonResponse({"stats":"no POST Request"})
+    
+def emp_filter(e):
+    if e.method =="GET":
+        print(e.GET)
+    if "all" in e.GET:
+        data = Emploeey.objects.filter(user = e.user).first()
+        return render(e , "main/emp_filter.html" , {"emp":data.get_all_works() })
+    if "approve" in e.GET:
+        data = Emploeey.objects.filter(user = e.user).first()
+        print(data.get_all_aprove_work())
+        return render(e , "main/emp_filter.html" , {"emp":data.get_all_aprove_work() })
+    elif "reject" in e.GET:
+        data = Emploeey.objects.filter(user = e.user).first()
+        return render(e , "main/emp_filter.html" , {"emp":data.get_rejected_works()})
+    elif "NewWork" in e.GET:
+        data =teacher.objects.all()
+        return render(e,"main/nework.html",{"teachers":data})
+ 

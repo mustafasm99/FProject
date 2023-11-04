@@ -1,0 +1,18 @@
+{%for i in emp%}
+<div class="card_em">
+    <div class="card_em_img">
+    <img src="{{i.emploeey.image.url}}" alt="">
+    </div>
+    <p>{{i.teacher}}</p>
+    <p>{{i.start_time}}</p>
+    <p>{{i.end_time}}</p>
+    <p>{{i.work_total_time}}</p>
+    <p>{{i.date}}</p>
+
+    {%if i.is_prove == True%}
+    <h4 class="Approved" id="approve{{i.id}}" value="{{i.id}}">Approved</h4>
+    {%elif i.is_prove == False%}
+    <h4 class="Rejected" id="reject{{i.id}}" value="{{i.id}}">Rejected</h4>
+    {%endif%}
+  </div>
+{%endfor%}

@@ -82,10 +82,10 @@ body ,html{
 }
 .label{
     border-radius: var(--rounder);
-    background-color: var(--btn);
+    background-color:#3d059e ;
     color: white;
+    width:700px;
     padding: 10px 20px;
-    margin: 10px 5px;
     align-items: center;
     text-align: center;
 }
@@ -135,7 +135,7 @@ body ,html{
 .input-group{
     display: flex;
     justify-content: space-between;
-    width: 80%;
+    width: 100%;
     max-width: 100%;
     margin: 1% 5%;
 }
@@ -199,31 +199,34 @@ body ,html{
 .aside{
     position: sticky;
     top:0;
-    flex:0 0 20%;
     height: 600px;
-    max-width: 600px;
     background-color: white;
     border-radius: var(--rounder);
-    padding: 5px 15px;
-    margin:var(--gap) 0;
     /* top:25%; */
 }
+
+.fix-content1{
+    flex:100%;
+    flex:1;
+}
+.fix-content2{
+    flex:100%;
+    flex:0.2;
+}
 .main-holder{
-    width: 90%;
-    padding: 10px;
+    width:97%;
     background-color: var(--bg);
     height: 72%;
     max-height: 70%;
     overflow-y: scroll;
     overflow-x: hidden;
-    border-radius: var(--rounder);
+  
 }
 .main-holder>div{
     width: 98%;
     max-width: 98%;
     background-color: white;
     margin: 10px;
-    border-radius: var(--rounder);
     height: 50px;
     align-items: center;
     padding: 5px;
@@ -324,8 +327,8 @@ body ,html{
     font-weight: 900;
 }
 .teacher-holder{
-    width: 100%;
-    height: 550px;
+    width: 500px;
+    height: 300px;
     max-width: 100%;
     background-color: white;
     border-radius: var(--rounder);
@@ -382,10 +385,12 @@ body ,html{
     border-radius: var(--rounder);
     height: 45px;
     text-align: center;
+    color: #EBEBEB;
+    background-color: #3d059e;
 }
 select{
     width: 100%;
-    background-color: var(--btn);
+    background-color:#3d059e;
     color: white;
     font-size: 25px;
     font-weight: 900;
@@ -532,7 +537,7 @@ select{
     grid-template-columns: repeat( auto-fit,minmax(230px , 1fr) );
     width: 90%;
     height:fit-content;
-    /* gap: 10px; */
+    gap: 10px;
     margin: 30px auto;
 }
 
@@ -605,4 +610,13 @@ select{
     height: fit-content;
     margin: 20px auto;
     
+}
+.Approved{
+    color: #00A839;
+}
+.Rejected{
+    color: #D92546;
+}
+.Padding{
+    color: #ffa939;
 }
