@@ -93,7 +93,8 @@ buttonsFilters.forEach(e => {
             RejectedWork()
         }
         else if (e.value == "NewWork"){
-            NewWork()
+            window.location="/Nework"
+        
         }
         else if (e.value == "all"){
             All_works()

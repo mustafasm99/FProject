@@ -1,8 +1,41 @@
-{% load static %}
+{% extends "base.html" %}
+{% block body %}
+{%load static%}
+
+<div class="container">
+    <div class="flex space-between">
+        <div class="home-icon">
+            <button><a href="{%url 'home_emp' %}"><img src="{%static 'icon/home.svg'%}" alt=""></a></button>
+        </div>
+
+        <div class="tholder">
+            <div class="Team_Leader_img">
+                <img src="{{emp.image.url}}" alt="">
+            </div>
+            <p>{{emp}}</p>
+        </div>
+
+        <div class="home-icon">
+            <button><a href="{%url 'LOGOUT'%}"><img src="{%static 'icon/logout.svg'%}" alt=""></a></button>
+        </div>
+    </div>
+    <div class="flex space-around">
+        <div>
+            <button class="section-head " value="all"><a href="{%url 'home_emp'%}">All Work</a></button>
+        </div>
+        
+        <div><button class="section-head" value="Approve"><a href="{%url 'home_emp'%}">Approved Work</a></button></div>
+        <div><button class="section-head" value="Rejected"><a href="{%url 'home_emp'%}">Rejected Work</a></button></div>
+        <div><button class="section-head" value="NewWork"><a href="{%url 'nework'%}">New Work +</a></button>
+            <div class="line-btn" id="LINE" ></div>
+        </div>
+
+    </div>
+<div class="line" ></div>
 
 
 <div class="flex">
-    <div class="teacher-holder fix-content1">
+    <div class="teacher-holder fix-content1" style="height: fit-content";>
         <div id="note" class="note fixed flex center shadow rounded box-1">
             <div>
 
@@ -29,7 +62,7 @@
         </div>
     </div>
     
-    <div class="fix-content1" >
+    <div class="fix-content1" style="height: fit-content;">
         <div class="flex center">
             <div class="label flex-50">
                 <select name="subject" id="subject">
@@ -49,21 +82,23 @@
             <div class="container  center main-holder">
                 {% for i in teachers %}
 
-            <div class="flex space-btw teacher" style = " height:fit-content " data-id="{{i.id}}">
-                <div class="themp-image mx-2">
+            <div class="flex space-btw teacher" style = " height:fit-content;text-align: justify; " data-id="{{i.id}}">
+                <div class="themp-image mx-2 flex-col">
                     {% if i.image%}
                     <img src="{{i.image.url}}" alt="" class="image">
                     {% else %}
                     <img src="{% static 'img/acc.jpg'%}" alt="">
                     {% endif %}
                 </div>
-                <div class="flex-col" >
-                    <h3 class="text mx-2">
-                        {{i.name}}
-                    </h3>
+                <h3 class="text mx-2">
+                    {{i.name}}
+                </h3>
+                <h3>
+                {{i.materials}} <br>
+                </h3>
+                <div class="flex-col">
                     <h3 class="text">
-                        Subject : {{i.materials}} <br>
-                        stage : {{i.stage}}
+                        {{i.stage}}
                     </h3>
                 </div>
             </div>
@@ -72,5 +107,6 @@
             </div>
         </div>
     </div>
-
 </div>
+<script src="{% static 'js/emp.js' %}"></script>
+{%endblock%}

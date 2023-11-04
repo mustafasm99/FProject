@@ -106,7 +106,7 @@ def get_teacher(e,id):
         data = teacher.objects.filter( id = id ).values("name" , "id").first()
         data['image'] = "acc.jpg"
     return JsonResponse({
-        "teacher":data
+        "teacher":data,
     })
 
 
@@ -365,5 +365,6 @@ def emp_filter(e):
         return render(e , "main/emp_filter.html" , {"emp":data.get_rejected_works()})
     elif "NewWork" in e.GET:
         data =teacher.objects.all()
-        return render(e,"main/nework.html",{"teachers":data})
+        sub = materials.objects.all()
+        return render(e,"main/nework.html",{"teachers":data , "sub":sub})
  

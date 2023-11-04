@@ -6,6 +6,11 @@
     --btn-aprov:#00A839;
     --btn-reject:#D92546;
 }
+a
+{
+    text-decoration: none;
+    color: inherit;
+}
 button{
     cursor: pointer;    
 }
@@ -206,12 +211,14 @@ body ,html{
 }
 
 .fix-content1{
-    flex:100%;
-    flex:1;
+    flex:0.8;
+    height: 100%;
+    margin: 20px;
 }
 .fix-content2{
-    flex:100%;
-    flex:0.2;
+    flex:0.3;
+    height: fit-content;
+    margin: 20px;
 }
 .main-holder{
     width:97%;
@@ -220,13 +227,14 @@ body ,html{
     max-height: 70%;
     overflow-y: scroll;
     overflow-x: hidden;
+    border:solid 5px #D0D2FF;
   
 }
 .main-holder>div{
     width: 98%;
     max-width: 98%;
     background-color: white;
-    margin: 10px;
+    margin: 12px;
     height: 50px;
     align-items: center;
     padding: 5px;

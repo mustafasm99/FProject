@@ -13,6 +13,8 @@
     <h4 class="Approved" id="approve{{i.id}}" value="{{i.id}}">Approved</h4>
     {%elif i.is_prove == False%}
     <h4 class="Rejected" id="reject{{i.id}}" value="{{i.id}}">Rejected</h4>
+    {%else%}
+    <h4 class="Padding" id="padding{{i.id}}" value="{{i.id}}">Padding</h4>
     {%endif%}
   </div>
 {%endfor%}
