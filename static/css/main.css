@@ -6,11 +6,15 @@
     --btn-aprov:#00A839;
     --btn-reject:#D92546;
 }
-a
-{
+a{
     text-decoration: none;
     color: inherit;
 }
+p{
+    font-weight: 900;
+    color: #454444;
+}
+
 button{
     cursor: pointer;    
 }
