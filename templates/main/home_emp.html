@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block body %}
 {%load static%}
-
 <div class="container">
     <div class="flex space-between">
         <div class="home-icon">
@@ -39,7 +38,7 @@
       <div class="card_em_img">
       <img src="{{emp.image.url}}" alt="">
       </div>
-      <!-- <p>{{emp}}</p> -->
+      <p><a href="/work/{{i.id}}">{{i.id}}</a></p> 
       <p>{{emp.teamleader}}</p>
       <p>{{i.start_time}}</p>
       <p>{{i.end_time}}</p>

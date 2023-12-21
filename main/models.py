@@ -105,18 +105,21 @@ class works_type(models.Model):
         return self.title
 
 class works(models.Model):
-    start_time = models.TimeField()
-    end_time = models.TimeField()
-    teacher = models.ForeignKey('teacher' , on_delete=models.CASCADE)
-    emploeey = models.ForeignKey('emploeey' , on_delete=models.CASCADE , null=True , blank=True)
-    is_prove = models.BooleanField(blank=True , null=True , default=None)
-    date = models.DateField(auto_now_add=True)
-    update = models.DateField(auto_now=True)
-    studio = models.ForeignKey('studio' , on_delete=models.CASCADE , null=True , blank=True)
-    type = models.ForeignKey(works_type, on_delete=models.CASCADE)
-    cause = models.ForeignKey('causes' , on_delete=models.CASCADE , null=True , blank=True)
-    studio_manger = models.ForeignKey("studio_manger", null=True , blank=True , on_delete=models.CASCADE)
-
+    start_time      = models.TimeField()
+    end_time        = models.TimeField()
+    teacher         = models.ForeignKey('teacher' , on_delete=models.CASCADE)
+    emploeey        = models.ForeignKey('emploeey' , on_delete=models.CASCADE , null=True , blank=True)
+    is_prove        = models.BooleanField(blank=True , null=True , default=None)
+    date            = models.DateField(auto_now_add=True)
+    update          = models.DateField(auto_now=True)
+    studio          = models.ForeignKey('studio' , on_delete=models.CASCADE , null=True , blank=True)
+    type            = models.ForeignKey(works_type, on_delete=models.CASCADE)
+    cause           = models.ForeignKey('causes' , on_delete=models.CASCADE , null=True , blank=True)
+    studio_manger   = models.ForeignKey("studio_manger", null=True , blank=True , on_delete=models.CASCADE)
+    Not_Ended       = models.BooleanField(default = False)
+    ERORR           = models.BooleanField(default = False)
+    
+    
     def __str__(self):
         user = None 
         if self.emploeey:
@@ -126,6 +129,14 @@ class works(models.Model):
         else:
             user = "NO USER"
         return f"{user} -> {self.teacher.name} | AT : {self.date} \n start time : {self.start_time} \n end time : {self.end_time}"
+    
+    def get_user(self):
+        user = None 
+        if self.emploeey:
+            user = self.emploeey.user.username
+        elif self.studio_manger:
+            user = self.studio_manger.user.username
+        return user
     
     def work_total_time(self):
         # start_time = datetime.strptime(str(self.start_time), "%H:%M:%S").time()

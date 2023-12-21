@@ -8,12 +8,13 @@ urlpatterns = [
     path('LOGOUT' , log_out , name='LOGOUT'),
     path('Nework' , New_work , name="nework"),
     path('get_teacher/<int:id>' , get_teacher , name='teachers'),
-    path('requred' , Requred , name='requred'),
+    path('requred' , Requred_temp , name='requred'),
     path('home_studio' , home_studio , name="home_studio"),
     path('nework_studio' , nowork_studio , name='nework_studio'),
     path('tools' , tools , name='tools'),
     path("filters" , filter_works , name='filter_works'),
     path("emp_filter",emp_filter , name='emp_filter'),
+    path("work/<int:id>" , work , name="work")
     # path('excel' , from_excel , name="excel")
 ]
    

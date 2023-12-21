@@ -89,6 +89,9 @@ def home_emplooy(e):
 
 def New_work(e):
     emp = Emploeey.objects.filter(user = e.user).first()
+    if 'work_id' in e.session:
+        messages.error(e , "لم تنة اخر عمليه لك" + "  " + str(e.session['work_id']))
+        return redirect('/')
     if emp:
         return render(e , "main/nework.html" , {
             'emp':emp,
@@ -116,29 +119,32 @@ def Requred(e):
         if e.GET.get('state') == 'running':
             if 'start_time' in e.session:
                 e.session['start_time'] = ''
-                e.session.modified = True
+                e.session.modified      = True
+                if 'work_id' in e.session:
+                    old_work            = works.objects.get(id = e.session['work_id'])
+                    old_work.end_time   = datetime.datetime.now().time().strftime("%H:%M:%S")
+                    messages.error(e , "لم تنهي اخر عملية بدئتها بشكل صحيح ")
             e.session['start_time'] = datetime.datetime.now().time().strftime("%H:%M:%S")
             return JsonResponse({
                 'state':'start record',
                 'start_at':e.session['start_time']
             })
         elif e.GET.get('state') == "stop":
-            print(e.GET)
             if 'start_time' in e.session:
                 end_time = datetime.datetime.now().time().strftime("%H:%M:%S")
-                # print(end_time , e.session['start_time'])
                 try:
-                    works.objects.create(
-                        start_time = e.session['start_time'],
-                        end_time = end_time,
-                        emploeey = Emploeey.objects.get(user = e.user) if Emploeey.objects.filter(user = e.user).first() else None,
-                        type = works_type.objects.filter(id = 1).first(),
-                        teacher = teacher.objects.filter(id = e.GET.get('teacher')).first(),
-                        is_prove = None,
-                        studio = studio.objects.get(id = int(e.GET.get('studio'))) if e.GET.get('studio') and e.GET.get('studio') is not None  else None ,
-                        cause = causes.objects.get(id = int(e.GET.get('case'))) if e.GET.get('case') and e.GET.get('case') is not None  else None ,
-                        studio_manger = studio_manger.objects.get(user = e.user) if studio_manger.objects.filter(user = e.user).first() else None
+                    newWork = works.objects.create(
+                        start_time      = e.session['start_time'],
+                        end_time        = end_time,
+                        emploeey        = Emploeey.objects.get(user = e.user) if Emploeey.objects.filter(user = e.user).first() else None,
+                        type            = works_type.objects.filter(id = 1).first(),
+                        teacher         = teacher.objects.filter(id = e.GET.get('teacher')).first(),
+                        is_prove        = None,
+                        studio          = studio.objects.get(id = int(e.GET.get('studio'))) if e.GET.get('studio') and e.GET.get('studio') is not None  else None ,
+                        cause           = causes.objects.get(id = int(e.GET.get('case'))) if e.GET.get('case') and e.GET.get('case') is not None  else None ,
+                        studio_manger   = studio_manger.objects.get(user = e.user) if studio_manger.objects.filter(user = e.user).first() else None
                     )
+                    e.session['Work_id'] = newWork.id
                     totalTime = datetime.datetime.strptime(end_time ,"%H:%M:%S")- datetime.datetime.strptime(e.session['start_time'] , "%H:%M:%S")
                     hours,teminder = divmod(totalTime.seconds , 3600)
                     minutes , secondes = divmod(teminder , 60)
@@ -159,7 +165,6 @@ def Requred(e):
                             'cause': causes.objects.get(id = int(e.GET.get('case'))).name if e.GET.get('case') and e.GET.get('case') is not None  else None ,
                         })
                 except:
-                    print(e.GET)
                     return JsonResponse({
                         'state':'you didnt select any teacher'
                     })
@@ -167,7 +172,81 @@ def Requred(e):
         "state":"no state sended"
     })
 
+def Requred_temp(e):
+    if e.GET.get('state') and e.GET['state'] == 'running':
+        if 'start_time' in e.session or 'work_id' in e.session:
+            return JsonResponse({
+                'messages':'you not finish you last work yet'
+            })
+        start_time                  = datetime.datetime.now().time().strftime("%H:%M:%S")
+        e.session['start_time']     = start_time 
+        try:
+            new_work                = works.objects.create(
+                start_time      = start_time,
+                end_time        = start_time,
+                emploeey        = Emploeey.objects.get(user = e.user) if Emploeey.objects.filter(user = e.user).first() else None,
+                type            = works_type.objects.filter(id = 1).first(),
+                teacher         = teacher.objects.filter(id = e.GET.get('teacher')).first(),
+                is_prove        = None,
+                studio          = studio.objects.get(id = int(e.GET.get('studio'))) if e.GET.get('studio') and e.GET.get('studio') is not None  else None ,
+                cause           = causes.objects.get(id = int(e.GET.get('case'))) if e.GET.get('case') and e.GET.get('case') is not None  else None ,
+                studio_manger   = studio_manger.objects.get(user = e.user) if studio_manger.objects.filter(user = e.user).first() else None
+                
+            )
+            e.session['work_id'] = new_work.id
+            e.session.save()
+            return JsonResponse({
+                    'state':'start record',
+                    'start_at':e.session['start_time']
+                })
+        except:
+                return JsonResponse({
+                    'state':'you didnt select any teacher'
+                })
+                
+                
+    if e.GET.get('state') and e.GET['state'] == "stop":
+        end_time    = datetime.datetime.now().time().strftime("%H:%M:%S")
+        old_work    = works.objects.get(id = e.session.get('work_id'))
+        old_work.end_time = end_time
+        old_work.Not_Ended = True
+        old_work.save()
+        totalTime = datetime.datetime.strptime(end_time ,"%H:%M:%S")- datetime.datetime.strptime(e.session['start_time'] , "%H:%M:%S")
+        hours,teminder = divmod(totalTime.seconds , 3600)
+        minutes , secondes = divmod(teminder , 60)
+        del(e.session['work_id'])
+        del(e.session['start_time'])
+        e.session.save()
+        if Emploeey.objects.filter(user = e.user):
+            return JsonResponse({
+                'state':'done',
+                'end_time':end_time,
+                'start_time':old_work.start_time,
+                'Total_requred': f"{hours}:{minutes}:{secondes}"
+            })
+        else:
+            return JsonResponse({
+                'state':'done',
+                'end_time':end_time,
+                'start_time':old_work.start_time,
+                'Total_requred': f"{hours}:{minutes}:{secondes}",
+                'studio': studio.objects.get(id = int(e.GET.get('studio'))).name if e.GET.get('studio') and e.GET.get('studio') is not None  else None ,
+                'cause': causes.objects.get(id = int(e.GET.get('case'))).name if e.GET.get('case') and e.GET.get('case') is not None  else None ,
+            })
 
+def work(e , id):
+    work_obj    = works.objects.get(id = id)
+    if work_obj.get_user() == e.user.username:
+        if e.POST.get('end-work'):
+            work_obj.Not_Ended = True
+            work_obj.ERORR     = True
+            work_obj.save()
+            del(e.session['start_time'])
+            del(e.session['work_id'])
+            e.session.save()
+        return render(e , "main/work.html" , {"data":works.objects.filter(id = id).first()})            
+    else:
+        return redirect("/")
 def home_studio(e):
     stu_mang = studio_manger.objects.filter(user = e.user).first()
     if stu_mang:
@@ -205,6 +284,7 @@ def tools(e):
                         'type': work_instance.get_type(),
                         'cause': work_instance.get_cause(),
                         'manager': work_instance.get_manager(),
+                        'ERORR'  : work_instance.ERORR,
                     })
                 data_set.append({'End section for ' : studio_instance.name})
             data = pd.DataFrame(data_set)
@@ -271,7 +351,8 @@ def tools(e):
                     'cause':i.cause,
                     'type':i.type,
                     'Team leader':i.get_teamleader(),
-                    "State":i.is_prove
+                    "State":i.is_prove,
+                    "ERORR":i.ERORR
                 }
                 temp.append(toFrame)
             frame = pd.DataFrame(temp)

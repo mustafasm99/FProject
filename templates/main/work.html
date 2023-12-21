@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block body %}
+{%load static%}
+<div class="work-holder">
+    <div class="work">
+        <h1>Teacher     : {{data.teacher}}</h1>
+        <h1>Start Time  : {{data.start_time}}</h1>
+        <h1>End Time    : {{data.end_time}}</h1>
+        <h1>Total Time  : {{data.work_total_time}}</h1>
+        {% if data.Not_Ended == False %}
+        <form action="" method="post">
+            {% csrf_token %}
+            <button class="btn" type="submit" name="end-work" value="true">
+                end work
+            </button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

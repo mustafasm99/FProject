@@ -514,7 +514,7 @@ select{
 
 .card_em{
    width: 230px;
-   height:280px;
+   height:300px;
    overflow: hidden; 
    border-radius: 20px;  
    text-align: center;
@@ -631,4 +631,66 @@ select{
 }
 .Padding{
     color: #ffa939;
+}
+.messages-holder
+{
+    width           : 100%;
+    height          : fit-content;
+    padding         : 10px;
+    text-align      : right;
+    display         : flex;
+    flex-direction  : column;
+    background-color: rgb(255, 173, 173);
+    color           : red;
+    margin          : 0;
+    font-size       : 25px;
+    font-weight     : 800;
+}
+.message
+{
+    margin          : 0 auto;
+    width           : 80%;
+}
+.work-holder
+{
+    width: fit-content;
+    height: fit-content;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #00a2ff;
+    border: 1px solid #454444;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50% , -50%);
+    font-size: 30px;
+    font-weight: 850;
+}
+.work
+{
+    text-align: justify;
+}
+.work h1:nth-child(even)
+{
+    color: white;
+    background-color: #00A839;
+    border-radius: 12px;
+}
+.work h1:nth-child(odd)
+{
+    color: white;
+    background-color: #00a2ff;
+}
+.work-holder button
+{
+    background-color    : #00A839;
+    color               : white;
+    font-size           : 35px;
+    font-weight         : 890;
+    margin              : 20px auto;
+    border-radius       : 20px;
+    text-transform      :capitalize ;
 }

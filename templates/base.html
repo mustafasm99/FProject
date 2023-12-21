@@ -15,7 +15,15 @@
     {% endblock style %}
 </head>
 <body>
-
+    {% if messages %}
+    <div class="messages-holder">
+        {% for i in messages %}
+            <div class="message">
+                {{i}}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
     {% block body %}
     {% endblock %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
