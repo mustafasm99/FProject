@@ -1,0 +1,60 @@
+// restart()
+            clearTimeout(timex)
+            
+            var endTime = new Date();
+            var elapsedTime = endTime - startTime; // Time in milliseconds
+
+            // Convert milliseconds to hours, minutes, and seconds
+            var hours = Math.floor(elapsedTime / 3600000);
+            var minutes = Math.floor((elapsedTime % 3600000) / 60000);
+            var seconds = Math.floor((elapsedTime % 60000) / 1000);
+
+            // Display the elapsed time
+            $('#hours').text(('0' + hours).slice(-2) + ':');
+            $('#min').text(('0' + minutes).slice(-2) + ':');
+            $('#sec').text(('0' + seconds).slice(-2));
+
+
+
+            startTimer();
+
+            // function restart(){
+                //     hours =0;      
+                //     mins =0;      
+                //     seconds =0;
+                //     $('#hours').text('00:');
+                //     $('#min').text('00:');
+                //     $('#sec').text('00');
+                // }
+                
+                // function startTimer(){
+                // timex = setTimeout(function(){
+                //     seconds++;
+                //     if(seconds >59){
+                //         seconds=0;
+                //         mins++;
+                //         if(mins>59){
+                //         mins=0;
+                //         hours++;
+                //         if(hours <10) { 
+                //             $("#hours").text('0'+hours+':')
+                //         } else $("#hours").text(hours+':');
+                //         }               
+                //     if(mins<10){                     
+                //         $("#min").text('0'+mins+':');}       
+                //         else $("#min").text(mins+':');
+                //                 }    
+                //     if(seconds <10) {
+                //         $("#sec").text('0'+seconds);} else {
+                //         $("#sec").text(seconds);
+                //         }
+                    
+                //     startTimer();
+                // },1000);
+                // }
+            
+                // function startTimer() {
+                //     timex = setTimeout(function () {
+                //         startTimer();
+                //     }, 1000);
+                // }

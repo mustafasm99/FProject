@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block body %}
+{%load static%}
+
+<div class="container">
+    <div class="flex space-between">
+        <div class="home-icon">
+            <button><a href="{%url 'home_emp' %}"><img src="{%static 'icon/home.svg'%}" alt=""></a></button>
+        </div>
+
+        <div class="tholder">
+            <div class="Team_Leader_img">
+                <img src="{{emp.image.url}}" alt="">
+            </div>
+            <p>{{emp}}</p>
+        </div>
+
+        <div class="home-icon">
+            <button><a href="{%url 'LOGOUT'%}"><img src="{%static 'icon/logout.svg'%}" alt=""></a></button>
+        </div>
+    </div>
+    <div class="flex space-around">
+        <div>
+            <button class="section-head " value="all">All Work</button>
+            <div class="line-btn" id="LINE"></div>
+        </div>
+
+        <div><button class="section-head" value="Approve">Approved Work</button></div>
+        <div><button class="section-head" value="Rejected">Rejected Work</button></div>
+        <div><button class="section-head" value="NewWork">New Work +</button></div>
+
+    </div>
+<div class="line"></div>
+<input type="hidden"id ="csrf_token" value="{{csrf_token}}">
+{%csrf_token%}
+<div class="grid-card">
+    {%for i in emp.get_all_works%}
+    <div class="card_em">
+      <div class="card_em_img">
+      <img src="{{emp.image.url}}" alt="">
+      </div>
+      <!-- <p>{{emp}}</p> -->
+      <p>{{emp.teamleader}}</p>
+      <p>{{i.start_time}}</p>
+      <p>{{i.end_time}}</p>
+      <p>{{i.work_total_time}}</p>
+      <p>{{i.teacher.name}}</p>
+      <p>{{i.date}}</p>
+
+      {%if i.is_prove == True%}
+      <h4 class="Approved">Approved</h4>
+      {%elif i.is_prove == False%}
+      <h4 class="Rejected">Rejected</h4>
+      {%else%}
+      <h4 class="Padding">Padding</h4>
+      {%endif%}
+    </div>
+{%endfor%}
+</div>
+</div>
+<script src="{%static 'js/emp.js'%}"></script>
+{% endblock body %}

@@ -1,0 +1,67 @@
+{% extends "admin/change_list.html"%}
+{%load static%}
+{%block content%}
+
+<style>
+.Range-holder{
+    padding:10px;
+    margin:10px;
+    border: 1px solid rgb(114, 114, 114);
+    border-radius: 12px;
+    width: fit-content;
+}
+.flex{
+    display: flex;
+}
+.sp{
+    justify-content: space-between;
+}
+.center{
+    text-align: center;
+    margin: 0 auto;
+
+}
+</style>
+
+<div class="flex">
+    <div class="Range-holder">
+        <div class="center"><h1>Tools</h1></div>
+        <form action="{% url 'tools' %}" method="post"> 
+            {% csrf_token %}
+            <input type="submit" class="btn btn-primary" name="work" value="work"> 
+            <select name="Type" id="">
+                <option value="">Filter</option>
+                <option value="reject"> Rejected </option>
+                <option value="approv"> Approved </option>
+                <option value="Nowork"> All users without work </option>
+            </select>
+            <p>
+                you will dawnload all works 
+            </p>
+        </form>
+    </div>
+    <div class="my-5 Range-holder" >
+        <div class="center">
+            <h1>
+                Range filters
+            </h1>
+        </div>
+        <form action="Get_excel/" method="post">
+             {% csrf_token %}
+             <div class="flex sp">
+                 <input type="date" name="from" class="input">
+                 <input type="date" name="to" class="input">
+             </div>
+            <input type="submit" class="center" value="Range Excel">
+            <select name="Type" id="">
+                <option value="">Filter</option>
+                <option value="reject"> Rejected </option>
+                <option value="approv"> Approved </option>
+                <option value="Nowork"> All users without work </option>
+            </select>
+        </form>
+        <p> you will dawnload works under the range </p>
+    </div>
+</div>
+{{block.super}}
+{%endblock%}
